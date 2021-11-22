@@ -1,6 +1,6 @@
 ## ⚫ O que é
 
-O repositório consiste na minha resolução do desafio proposto em um processo seletivo, o desafio  era recuperar um banco de dados em formato JSON, realizando a substituição e a correção dos dados, bem como a coletânia e exibição de certos dados. 
+O repositório consiste na minha resolução do desafio proposto em um processo seletivo, o desafio  era recuperar um banco de dados em formato JSON, realizando a substituição e a correção dos dados, bem como a coletânia e exibição de certos dados, através do nodeJS.
 
 Arquivos:
 - broken-database.json (banco de dados corrompido)
