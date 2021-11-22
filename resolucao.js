@@ -49,35 +49,15 @@ function cquantity(dados){
     return dados
 }
 
-function remove_duplicates(arr) {
-    var obj = {};
-    var ret_arr = [];
-    for (var i = 0; i < arr.length; i++) {
-        obj[arr[i]] = true;
-    }
-    for (var key in obj) {
-        ret_arr.push(key);
-    }
-    return ret_arr;
-}
 
-function remove_duplicates(arr) {
-    var obj = {};
-    var ret_arr = [];
-    for (var i = 0; i < arr.length; i++) {
-        obj[arr[i]] = true;
-    }
-    for (var key in obj) {
-        ret_arr.push(key);
-    }
-    return ret_arr;
-}
 
 
 function imprime(dados){
+   
+    // Passos
     // pegar todas as categorias e colocar em uma array
     // sort na array e colocar em ordem alfabetica
-    // printar por categoria
+    // pegar quantidade de ocorrencias de cada categoria ja na ordem alfabetica e colocar em uma array
     
     var array = [];
     var arrayquantidades = [];
@@ -92,17 +72,16 @@ function imprime(dados){
             array.push(dados[i]["category"])
     }
     array.sort(); //ordem alfabetica
-    // console.log(array)
     
     // pegar quantidade de ocorrencias de cada categoria ja na ordem alfabetica e colocar em uma array
     
     for(i in array)
     {
-        if(i==0)
+        if(i==0) // não puxar o 0 pra array na primeira ocorrencia
             quantidade = quantidade; // não fazer nada
         else
             arrayquantidades.push(quantidade)
-        quantidade = 0;
+        quantidade = 0; // cada vez que o for reseta a quantidade volta pra 0 para ser somada novamente
         for(j in dados)
             {
                 if(dados[j]["category"] == array[i])
@@ -121,9 +100,18 @@ function imprime(dados){
     }
     arrayquantidades.push(quantidade) // for acaba então para a ultima quantidade é necessário mais um comando
     // agora temos as categorias em ordem alfabetica e quantas vezes elas existem nos dados
-    console.log(array)
-    console.log(arrayquantidades)
+    console.log("Array categorias em ordem alfabética = " + array)
+    console.log("Array quantidades de cada categoria (ordem alfabética) = " + arrayquantidades + "\n---------------------------------------------------------------------------------------------\n")
+    console.log("Nomes dos produtos ordenados por categoria em ordem alfabética e ID em ordem crescente: ")
 
+
+
+    // percorrer dados da array categoria 
+    // percorrer dados (json) 
+    // se a categoria dos dados atuais forem iguais as da array que esta sendo percorrida no primeiro for, o id é puxado para uma array auxiliar, que é colocada em ordem crescente em toda interação do if
+    // uma quantidade auxiliar e somada, e se essa quantidade for igual a quantidade de ocorrencias da categoria atual os dados são percorridos denovo para printar os dados que possuirem os IDS na array auxiliar
+    // tendo em conta que o for primario esta percorrendo as categorias em ordem alfabetica, e a array auxiliar esta sempre em ordem crescente, o desafio de printar por categoria em ordem alfabetica está completo
+    
     for(i in array)
     {
         quantidade = 0;
@@ -135,13 +123,15 @@ function imprime(dados){
                     aux.push(dados[j]["id"])
                     aux.sort();
                     quantidade++;
-                    //console.log(aux, quantidade)
+                    //console.log("IDS array aux = " + aux)
                     //console.log("qtde = " + quantidade, "arrayqtde[i] = " + arrayquantidades[i])
                 }
 
+
                 if(quantidade == arrayquantidades[i])
                 {
-                    quantidade = 0;
+                    console.log("\nCategoria = " + dados[j]["category"])
+                    quantidade = 0; // quantidade resetada para não printar em todo for
                     //console.log("bateu")
                     for(l in aux)
                     {
@@ -149,55 +139,74 @@ function imprime(dados){
                         {
                             if(dados[k]["id"] == aux[l])
                             {
-                                console.log(dados[k]["name"])
+                                console.log("ID = "+ dados[k]["id"] + "     " + dados[k]["name"])
                             }    
-                        }
-                    }
+                        } 
+                    } 
+                } // if 
+            } // for j in dados
+    } //for i in array
+} /// function imprime
+
+function valortotal(dados){
+    // fazer uma array com todas as categorias
+    console.log("\n------------------------------------------------------------------------------------\nPreço do valor do total de estoque por categoria")
+    var arraycategoria = [];
+    var soma = 0;
+    var arraysomas = [];
+    
+    for(j in dados[j]["category"])
+    {
+        if(arraycategoria.includes(dados[j]["category"]))
+            arraycategoria = arraycategoria; // não fazer nada
+        else
+            arraycategoria.push(dados[j]["category"])
+    }
+    arraycategoria.sort(); //ordem alfabetica 
+
+
+    for(i in arraycategoria)
+    {
+        if(i==0)
+            arraycategoria = arraycategoria;
+        else
+            {
+                soma = 0;
+                for(l in arraysomas)
+                    soma += arraysomas[l]
+                console.log("Soma total do valor de estoque da categoria = R$" + soma)
+                arraysomas = [];
+            }
+        quantidade = 0;
+        aux = [];
+        console.log("\n" + arraycategoria[i])
+        for(j in dados)
+            {
+                if(dados[j]["category"] == arraycategoria[i])
+                {
+                    soma = dados[j]["quantity"] * dados[j]["price"]
+                    arraysomas.push(soma)
                 }
             }
     }
-
-
+    // repetir o processo para a ultima categoria pois o for acaba antes do if
+    soma = 0;
+    for(x in arraysomas)
+        soma += arraysomas[x]
+    console.log("Soma total de estoque da categoria = " + soma)
 }
-
-// ordem print
-// acessorios - mouse gamer
-// eletrodomesticos - refrigerador, fogao de piso, forno microndas, lava & seca
-// eletronicos - kit gamer, monitor, smart tv, home theater 
-// panelas - conjunto de panelas
-
-// ordem price * quantidade de todos os produtos cada categoria
-// acessorios 
-// mouse gamer - 699 * 0 = 0
-// acessorios total = 0
-
-// eletrodomesticos
-// lava e seca = 3719.70 * 57 = 212.022,9
-// refrigerador = 3880.23 * 12 = 46.562,76
-// fogao do piso = 1419 * 37 = 52.503
-// forno microondas = 358.77 * 13 = 4.664,01
-// eletrodomesticos total = 315.752,67.
-
-// eletronicos
-// smart tv = 5799.42 * 0 = 0
-// home theater = 2199 * 80 = 175.920
-// kit gamer = 25599 * 0 = 0
-// monitor = 1559.40 * 18 = 28.069,2
-// eletronicos total = 203.989,2
-
-// panelas
-// conjunto de panelas = 192.84 * 21 
-// panelas total = 4.049,64
 
 
 var json = readjson("/broken-database.json")
+
 json = cnomes(json) // Corrigir caracteres 
 json = JSON.parse(json) // Transformar em OBJ para manipular numeros e propriedades
 json = cprice(json) // Corrigir tipo dos preços
 json = cquantity(json) // Corrigir quantity null
-imprime(json)
 
-//console.log(json)
+imprime(json)
+valortotal(json)
+
 
 
 
